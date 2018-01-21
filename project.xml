@@ -1,0 +1,27 @@
+<path id="ant.additions.classpath">
+    <fileset dir="ant"/>
+</path>
+
+<target name="deployAndTestAndReport">
+    <taskdef
+        name="sfdeploy"
+        classname="com.salesforce.ant.DeployWithXmlReportTask"
+        classpathref="ant.additions.classpath"
+        />
+    <delete dir="test-report-xml" quiet="true"/>
+    <sfdeploy
+        username="${sf.username}"
+        password="${sf.password}"
+        serverurl="${sf.serverurl}"
+        deployRoot="src"
+        testLevel="RunLocalTests"
+        junitreportdir="test-report-xml"
+        >
+        <!-- Run only tests with file names that match this pattern -->
+        <batchtest>
+            <fileset dir="src/classes">
+                <include name="*Test.cls"/>
+            </fileset>
+        </batchtest>
+    </sfdeploy>
+    </target>
